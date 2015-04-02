@@ -3,7 +3,6 @@ project(capability_map)
 
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
-  #  octomap
   roscpp
   std_msgs
   visualization_msgs
@@ -39,7 +38,6 @@ target_link_libraries(capability_octree ${OCTOMAP_LIBRARIES} ${catkin_LIBRARIES}
 
 catkin_add_gtest(CapabilityTest src/CapabilityTest.cpp)
 target_link_libraries(CapabilityTest capability_octree ${OCTOMAP_LIBRARIES} ${catkin_LIBRARIES})
-#rosbuild_add_gtest_build_flags(CapabilityTest)
 
 add_executable(capability_map src/main.cpp)
 target_link_libraries(capability_map capability_octree ${OCTOMAP_LIBRARIES} ${catkin_LIBRARIES})
