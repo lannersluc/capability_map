@@ -155,12 +155,18 @@ Capability CapabilityOcTree::getNodeCapability(const double &x, const double &y,
     // NOTE: there is a bug in creating a key. Floating point precision seems to cause the error
     // adding a small amount (1% of resolution) to x, y and z should handle this
     double correctionValue = resolution/100.0;
-    return search(x + correctionValue, y + correctionValue, z + correctionValue)->getCapability();
+    CapabilityOcTreeNode* n = search(x + correctionValue, y + correctionValue, z + correctionValue);
+    if(!n)
+        return Capability();
+    return n->getCapability();
 }
 
 bool CapabilityOcTree::isPosePossible(const double &x, const double &y, const double &z, const double &phi, const double &theta) const
 {
-    return search(x, y, z)->getCapability().isDirectionPossible(phi, theta);
+    CapabilityOcTreeNode* n = search(x, y, z);
+    if(!n)
+        return false;
+    return n->getCapability().isDirectionPossible(phi, theta);
 }
 
 bool CapabilityOcTree::isPosePossible(const octomap::pose6d pose) const
@@ -169,7 +175,7 @@ bool CapabilityOcTree::isPosePossible(const octomap::pose6d pose) const
     double phi = atan2(rotatedVector.y(), rotatedVector.x()) * 180.0 / M_PI;
     double theta = acos(rotatedVector.z()) * 180.0 / M_PI;
 
-    return search(pose.x(), pose.y(), pose.z())->getCapability().isDirectionPossible(phi, theta);
+    return isPosePossible(pose.x(), pose.y(), pose.z(), phi, theta);
 }
 
 std::vector<octomath::Vector3> CapabilityOcTree::getPositionsWithMinReachablePercent(double percent)
