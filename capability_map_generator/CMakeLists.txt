@@ -22,8 +22,8 @@ include_directories(include ${EIGEN_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
 
 add_library(reachability_sphere src/ReachabilitySphere.cpp)
 
-#add_gtest(CapabilityMapGeneratorTest src/CapabilityMapGeneratorTest.cpp)
-#target_link_libraries(CapabilityMapGeneratorTest reachability_sphere ${EIGEN_LIBRARIES} ${catkin_LIBRARIES})
+catkin_add_gtest(CapabilityMapGeneratorTest src/CapabilityMapGeneratorTest.cpp)
+target_link_libraries(CapabilityMapGeneratorTest reachability_sphere ${EIGEN_LIBRARIES} ${catkin_LIBRARIES})
 
 add_executable(capability_map_generator src/main.cpp src/ReachabilityInterface.cpp src/ReachabilitySphere.cpp)
 target_link_libraries(capability_map_generator ${EIGEN_LIBRARIES} ${catkin_LIBRARIES})
