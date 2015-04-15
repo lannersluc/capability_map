@@ -30,7 +30,8 @@ OF SUCH DAMAGE.
 
 #include <ros/ros.h>
 #include "capability_map_generator/ReachabilityInterface.h"
-#include "kinematics_base/kinematics_base.h"
+#include <moveit/robot_model_loader/robot_model_loader.h>
+#include <moveit/robot_state/robot_state.h>
 
 namespace capability_map_generator
 {
@@ -38,14 +39,26 @@ namespace capability_map_generator
 class ReachabilityROSKinematicsInterface : public ReachabilityInterface
 {
   public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
     ReachabilityROSKinematicsInterface();
 
     bool isReachable(const octomath::Pose6D &pose) const;
 
   private:
-    boost::shared_ptr<kinematics::KinematicsBase> kinematics;
+    void loadKinematics(const std::string & group, const std::string & robot_description,
+            const std::string & base_frame);
 
-    std::vector<double> seed;
+  private:
+    robot_state::RobotStatePtr kinematic_state;
+    const robot_state::JointModelGroup* joint_model_group;
+
+    std::string tip_name;
+
+    int attempts;
+    double timeout;
+
+    Eigen::Affine3d ikBaseTransform;
 };
 
 }
