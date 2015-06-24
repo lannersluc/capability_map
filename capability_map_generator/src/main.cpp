@@ -214,7 +214,7 @@ int main(int argc, char** argv)
         ros::shutdown();
         exit(1);
     }
-    if (pathName.find_last_of('/') == pathName.length())
+    if (pathName.find_last_of('/') == pathName.length() - 1)
     {
         ROS_ERROR("Error: Path to %s does not name a valid file!\
                    \nExample: /home/user/capability_maps/map1.cpm", pathName.c_str());
